@@ -9,7 +9,9 @@ How to add it to the project ?
 Open GoogleOAuthService.cs file. You will see 3 Methods;
 
 GetToken()
+
 SetUserClaims(string accessToken, string userId, int roleId)
+
 CreateUser(string accessToken, string email, string password)
 
 First, you need to Google auth sdk for get auth token. You can install it with nuget package manager. 
