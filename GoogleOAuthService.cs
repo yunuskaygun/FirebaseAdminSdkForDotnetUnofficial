@@ -76,6 +76,51 @@ namespace Piri.Vehicle.Services.Api.Service
         }
 
 
+        public async Task<string> GetUsersAsync(string accessToken, int maxResults = 100, string nextPageToken = null)
+        {
+            //eğer token yoksa token olmadan maxResult ı yollanacak. request:{'maxResults': 1000 } veya request:{'maxResults': 1000, 'nextPageToken':'token'}
+            //endpoint 'downloadAccount'
+            //method type POST
+
+            WebRequest tRequest = WebRequest.Create("https://www.googleapis.com/identitytoolkit/v3/relyingparty/downloadAccount");
+            tRequest.Method = "post";
+            tRequest.ContentType = "application/json";
+
+            object request;
+
+            if (string.IsNullOrEmpty(nextPageToken))
+                request = new { maxResults = maxResults };
+            else
+                request = new { maxResults = maxResults, nextPageToken = nextPageToken };
+
+            var json = JsonConvert.SerializeObject(request);
+
+            Byte[] byteArray = Encoding.UTF8.GetBytes(json);
+            tRequest.Headers.Add($"X-Client-Version", "Node/Admin/5.5.0");
+            tRequest.Headers.Add($"Authorization", " Bearer " + accessToken);
+            tRequest.ContentLength = byteArray.Length;
+
+            using (Stream dataStream = tRequest.GetRequestStream())
+            {
+                dataStream.Write(byteArray, 0, byteArray.Length);
+                using (WebResponse tResponse = tRequest.GetResponse())
+                {
+                    using (Stream dataStreamResponse = tResponse.GetResponseStream())
+                    {
+                        if (dataStreamResponse != null)
+                        {
+                            using (StreamReader tReader = new StreamReader(dataStreamResponse))
+                            {
+                                return await tReader.ReadToEndAsync();
+                            }
+                        }
+                    }
+                }
+            }
+
+            return string.Empty;
+        }
+        
         public string CreateUser(string accessToken, string email, string password)
         {
             try
