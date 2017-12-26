@@ -34,6 +34,6 @@ var id = service.CreateUser(accessToken, "yunuskaygun@gmail.com", "123456");
 
 Note1: If you need to more methods like "listAllUsers", "deleteUser" you can use firebase rest api endpoinds and parameters.
 
-Note2: If you need to more scopes, add scopes to credential array where GetToken() method.
+Note2: If you need more scopes, add scopes to credential array where GetToken() method.
 
 
