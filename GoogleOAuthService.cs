@@ -9,7 +9,7 @@ using System.Web.Script.Serialization;
 
 namespace Piri.Vehicle.Services.Api.Service
 {
-    public class GoogleOAuthService : IOAuthService
+    public class GoogleOAuthService
     {
         public GoogleOAuthService()
         {
